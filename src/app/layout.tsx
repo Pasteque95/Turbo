@@ -3,7 +3,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Turbo",
-  description: "Turbo is een webapplicatie voor het beheren van oefentrajecten voor het praktijkexamen rijbewijs B.",
+  description:
+    "Turbo is een digitaal logboek voor oefentrajecten van het praktijkexamen rijbewijs B.",
 };
 
 export default function RootLayout({
