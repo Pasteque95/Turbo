@@ -1,20 +1,35 @@
+import Image from "next/image";
+import AuthCard from "@/components/auth/AuthCard";
+
 export default function Home() {
   return (
-    <section className="flex h-full items-center justify-center px-6">
-      <div className="text-center">
-        <h1 className="text-5xl font-bold text-red-600">
-          Turbo
-        </h1>
+    <section className="relative flex flex-1 items-center justify-center overflow-hidden bg-zinc-950">
 
-        <p className="mt-4 text-lg text-white">
-          Welkom bij Turbo.
-        </p>
-
-        <p className="mt-2 text-zinc-400">
-          Een digitaal logboek voor oefentrajecten van het praktijkexamen
-          rijbewijs B.
-        </p>
+      {/* Achtergrondauto */}
+      <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+        <Image
+          src="/images/logo.png"
+          alt="Turbo auto"
+          width={1356}
+          height={600}
+          priority
+          className="
+            w-[85vw]
+            h-auto
+            max-w-none
+            translate-y-10
+            opacity-90
+            pointer-events-none
+            select-none
+          "
+        />
       </div>
+
+      {/* Loginkaart */}
+      <div className="relative z-10">
+        <AuthCard />
+      </div>
+
     </section>
   );
 }
