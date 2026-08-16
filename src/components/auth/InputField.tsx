@@ -1,10 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  Lock,
+  Mail,
+  User,
+} from "lucide-react";
 
 type InputFieldProps = {
-  type: "email" | "password";
+  type: "text" | "email" | "password";
   name: string;
   placeholder: string;
 };
@@ -15,7 +21,25 @@ export default function InputField({
   placeholder,
 }: InputFieldProps) {
   const isPassword = type === "password";
-  const [showPassword, setShowPassword] = useState(false);
+
+  const [showPassword, setShowPassword] =
+    useState(false);
+
+  const getIcon = () => {
+    if (isPassword) {
+      return showPassword ? (
+        <Eye size={14} />
+      ) : (
+        <EyeOff size={14} />
+      );
+    }
+
+    if (type === "email") {
+      return <Mail size={14} />;
+    }
+
+    return <User size={14} />;
+  };
 
   return (
     <div className="group relative">
@@ -32,11 +56,15 @@ export default function InputField({
           group-focus-within:text-red-500
         "
       >
-        {isPassword ? <Lock size={14} /> : <Mail size={14} />}
+        {getIcon()}
       </span>
 
       <input
-        type={isPassword && showPassword ? "text" : type}
+        type={
+          isPassword && showPassword
+            ? "text"
+            : type
+        }
         name={name}
         placeholder={placeholder}
         className="
@@ -63,8 +91,14 @@ export default function InputField({
       {isPassword && (
         <button
           type="button"
-          onClick={() => setShowPassword((prev) => !prev)}
-          aria-label={showPassword ? "Hide password" : "Show password"}
+          onClick={() =>
+            setShowPassword((prev) => !prev)
+          }
+          aria-label={
+            showPassword
+              ? "Hide password"
+              : "Show password"
+          }
           className="
             absolute
             right-3
@@ -76,7 +110,11 @@ export default function InputField({
             hover:text-white
           "
         >
-          {showPassword ? <Eye size={14} /> : <EyeOff size={14} />}
+          {showPassword ? (
+            <EyeOff size={14} />
+          ) : (
+            <Eye size={14} />
+          )}
         </button>
       )}
     </div>

@@ -1,8 +1,14 @@
+"use client";
+
+import { useState } from "react";
 import CardHeader from "./CardHeader";
 import GlassBackground from "./GlassBackground";
 import LoginForm from "./LoginForm";
+import RegisterForm from "./RegisterForm";
 
 export default function AuthCard() {
+  const [mode, setMode] = useState<"login" | "register">("login");
+
   return (
     <div
       className="
@@ -24,7 +30,11 @@ export default function AuthCard() {
         <CardHeader />
 
         <div className="mt-5">
-          <LoginForm />
+          {mode === "login" ? (
+            <LoginForm onRegister={() => setMode("register")} />
+          ) : (
+            <RegisterForm onLogin={() => setMode("login")} />
+          )}
         </div>
       </div>
     </div>
