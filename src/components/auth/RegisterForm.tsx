@@ -51,6 +51,12 @@ export default function RegisterForm({
         placeholder="Password"
       />
 
+      <InputField
+        type="date"
+        name="provisionalLicenseAt"
+        placeholder="Provisional license date"
+      />
+
       {message && (
         <p className="text-center text-xs text-zinc-400">
           {message}

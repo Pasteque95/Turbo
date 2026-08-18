@@ -1,16 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Eye,
-  EyeOff,
-  Lock,
-  Mail,
-  User,
-} from "lucide-react";
+import { Calendar, Eye, EyeOff, Lock, Mail } from "lucide-react";
 
 type InputFieldProps = {
-  type: "text" | "email" | "password";
+  type: "text" | "email" | "password" | "date";
   name: string;
   placeholder: string;
 };
@@ -21,25 +15,10 @@ export default function InputField({
   placeholder,
 }: InputFieldProps) {
   const isPassword = type === "password";
+  const isEmail = type === "email";
+  const isDate = type === "date";
 
-  const [showPassword, setShowPassword] =
-    useState(false);
-
-  const getIcon = () => {
-    if (isPassword) {
-      return showPassword ? (
-        <Eye size={14} />
-      ) : (
-        <EyeOff size={14} />
-      );
-    }
-
-    if (type === "email") {
-      return <Mail size={14} />;
-    }
-
-    return <User size={14} />;
-  };
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="group relative">
@@ -56,15 +35,17 @@ export default function InputField({
           group-focus-within:text-red-500
         "
       >
-        {getIcon()}
+        {isPassword ? (
+          <Lock size={14} />
+        ) : isEmail ? (
+          <Mail size={14} />
+        ) : isDate ? (
+          <Calendar size={14} />
+        ) : null}
       </span>
 
       <input
-        type={
-          isPassword && showPassword
-            ? "text"
-            : type
-        }
+        type={isPassword && showPassword ? "text" : type}
         name={name}
         placeholder={placeholder}
         className="
@@ -91,14 +72,8 @@ export default function InputField({
       {isPassword && (
         <button
           type="button"
-          onClick={() =>
-            setShowPassword((prev) => !prev)
-          }
-          aria-label={
-            showPassword
-              ? "Hide password"
-              : "Show password"
-          }
+          onClick={() => setShowPassword((prev) => !prev)}
+          aria-label={showPassword ? "Hide password" : "Show password"}
           className="
             absolute
             right-3
@@ -110,11 +85,7 @@ export default function InputField({
             hover:text-white
           "
         >
-          {showPassword ? (
-            <EyeOff size={14} />
-          ) : (
-            <Eye size={14} />
-          )}
+          {showPassword ? <Eye size={14} /> : <EyeOff size={14} />}
         </button>
       )}
     </div>
