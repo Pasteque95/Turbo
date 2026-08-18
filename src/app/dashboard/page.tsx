@@ -16,12 +16,6 @@ export default async function DashboardPage() {
       <div className="flex min-h-screen">
         {/* Sidebar */}
         <aside className="flex w-56 flex-col border-r border-zinc-800 bg-zinc-900/60">
-          {/* Logo */}
-          <div className="flex h-20 items-center border-b border-zinc-800 px-6">
-            <h1 className="text-xl font-bold tracking-[0.2em] text-red-500">
-              TURBO
-            </h1>
-          </div>
 
           {/* Navigation */}
           <nav className="flex-1 px-3 py-6">
