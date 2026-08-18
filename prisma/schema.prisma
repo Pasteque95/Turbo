@@ -8,12 +8,32 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  firstName String
-  lastName  String
-  email     String   @unique
-  password  String
-  role      String   @default("student")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                   Int      @id @default(autoincrement())
+  firstName            String
+  lastName             String
+  email                String   @unique
+  password             String
+  provisionalLicenseAt DateTime
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  drivingSessions      DrivingSession[]
+}
+
+model DrivingSession {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+
+  startLocation String
+  startTime     DateTime
+  endLocation   String
+  endTime       DateTime
+  distanceKm    Float
+  trafficLevel  String
+  guideComment  String?
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

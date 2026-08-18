@@ -18,10 +18,10 @@ export async function registerUser(formData: FormData) {
     };
   }
 
-  if (password.length < 8) {
+  if (password.length < 6) {
     return {
       success: false,
-      message: "Password must contain at least 8 characters.",
+      message: "Password must be at least 6 characters.",
     };
   }
 
@@ -46,63 +46,12 @@ export async function registerUser(formData: FormData) {
       lastName,
       email,
       password: hashedPassword,
+      provisionalLicenseAt: new Date(),
     },
   });
 
   return {
     success: true,
     message: "Account created successfully.",
-  };
-}
-
-export async function loginUser(formData: FormData) {
-  const email = String(formData.get("email") ?? "")
-    .trim()
-    .toLowerCase();
-
-  const password = String(formData.get("password") ?? "");
-
-  if (!email || !password) {
-    return {
-      success: false,
-      message: "Please enter your email and password.",
-    };
-  }
-
-  const user = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  });
-
-  if (!user) {
-    return {
-      success: false,
-      message: "Invalid email or password.",
-    };
-  }
-
-  const passwordMatches = await bcrypt.compare(
-    password,
-    user.password
-  );
-
-  if (!passwordMatches) {
-    return {
-      success: false,
-      message: "Invalid email or password.",
-    };
-  }
-
-  return {
-    success: true,
-    message: "Login successful.",
-    user: {
-      id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      role: user.role,
-    },
   };
 }
