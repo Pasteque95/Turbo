@@ -43,6 +43,16 @@ export default async function DashboardPage() {
   const totalKm = drivingStats._sum.distanceKm ?? 0;
   const totalSessions = drivingStats._count.id;
 
+  const recentSessions = await prisma.drivingSession.findMany({
+    where: {
+      userId,
+    },
+    orderBy: {
+      startTime: "desc",
+    },
+    take: 5,
+  });
+
   const now = new Date();
   const licenseDate = new Date(user.provisionalLicenseAt);
 
@@ -204,6 +214,117 @@ export default async function DashboardPage() {
                   Opgeslagen rijtrajecten
                 </p>
               </div>
+            </div>
+
+            {/* Recente trajecten */}
+            <div className="mt-8 rounded-xl border border-zinc-800 bg-zinc-900/50">
+              <div className="flex items-center justify-between border-b border-zinc-800 px-5 py-4">
+                <div>
+                  <h3 className="font-semibold">
+                    Recente trajecten
+                  </h3>
+
+                  <p className="mt-1 text-xs text-zinc-500">
+                    Je laatste opgeslagen rijtrajecten
+                  </p>
+                </div>
+
+                <Link
+                  href="/trajecten"
+                  className="
+                    text-xs
+                    font-medium
+                    text-red-500
+                    transition-colors
+                    hover:text-red-400
+                  "
+                >
+                  Alle trajecten
+                </Link>
+              </div>
+
+              {recentSessions.length === 0 ? (
+                <div className="px-5 py-8 text-center">
+                  <p className="text-sm text-zinc-400">
+                    Je hebt nog geen trajecten toegevoegd.
+                  </p>
+
+                  <Link
+                    href="/trajecten"
+                    className="
+                      mt-3
+                      inline-block
+                      text-xs
+                      font-medium
+                      text-red-500
+                      transition-colors
+                      hover:text-red-400
+                    "
+                  >
+                    Eerste traject toevoegen
+                  </Link>
+                </div>
+              ) : (
+                <div className="divide-y divide-zinc-800">
+                  {recentSessions.map((session) => (
+                    <div
+                      key={session.id}
+                      className="
+                        grid
+                        grid-cols-4
+                        gap-4
+                        px-5
+                        py-4
+                        text-sm
+                      "
+                    >
+                      <div>
+                        <p className="text-xs text-zinc-500">
+                          Start
+                        </p>
+
+                        <p className="mt-1 text-zinc-200">
+                          {session.startLocation}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p className="text-xs text-zinc-500">
+                          Eind
+                        </p>
+
+                        <p className="mt-1 text-zinc-200">
+                          {session.endLocation}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p className="text-xs text-zinc-500">
+                          Afstand
+                        </p>
+
+                        <p className="mt-1 text-zinc-200">
+                          {session.distanceKm.toFixed(1)} km
+                        </p>
+                      </div>
+
+                      <div>
+                        <p className="text-xs text-zinc-500">
+                          Datum
+                        </p>
+
+                        <p className="mt-1 text-zinc-200">
+                          {new Intl.DateTimeFormat("nl-BE", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                          }).format(session.startTime)}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </section>
