@@ -1,16 +1,7 @@
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 import Link from "next/link";
+import { createDrivingSession } from "@/app/actions/trajecten";
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-
-export default async function NieuwTrajectPage() {
-  const session = await getServerSession(authOptions);
-
-  if (!session) {
-    redirect("/");
-  }
-
+export default function NieuwTrajectPage() {
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
       <div className="flex min-h-screen">
@@ -92,291 +83,226 @@ export default async function NieuwTrajectPage() {
               </h1>
 
               <p className="mt-2 text-sm text-zinc-400">
-                Voeg een nieuw gereden traject toe.
+                Registreer een nieuw gereden traject.
               </p>
             </div>
 
-            {/* Form */}
-            <form className="mt-8 space-y-6">
-              {/* Locaties */}
-              <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-6">
-                <h2 className="text-lg font-semibold">
-                  Route
-                </h2>
+            {/* Formulier */}
+            <form 
+              action={createDrivingSession}
+              className="mt-8 rounded-xl border border-zinc-800 bg-zinc-900/40 p-6 md:p-8">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                {/* Startlocatie */}
+                <div>
+                  <label
+                    htmlFor="startLocation"
+                    className="mb-2 block text-sm font-medium text-zinc-300"
+                  >
+                    Startlocatie
+                  </label>
 
-                <p className="mt-1 text-sm text-zinc-500">
-                  Geef aan waar je traject begon en eindigde.
-                </p>
-
-                <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2">
-                  {/* Startlocatie */}
-                  <div>
-                    <label
-                      htmlFor="startLocation"
-                      className="mb-2 block text-sm font-medium text-zinc-300"
-                    >
-                      Startlocatie
-                    </label>
-
-                    <input
-                      id="startLocation"
-                      name="startLocation"
-                      type="text"
-                      placeholder="Bijvoorbeeld Brussel"
-                      className="
-                        h-11
-                        w-full
-                        rounded-lg
-                        border
-                        border-zinc-700
-                        bg-zinc-950
-                        px-4
-                        text-sm
-                        text-white
-                        placeholder:text-zinc-600
-                        outline-none
-                        transition-colors
-                        focus:border-red-600
-                        focus:ring-2
-                        focus:ring-red-600/20
-                      "
-                    />
-                  </div>
-
-                  {/* Eindlocatie */}
-                  <div>
-                    <label
-                      htmlFor="endLocation"
-                      className="mb-2 block text-sm font-medium text-zinc-300"
-                    >
-                      Eindlocatie
-                    </label>
-
-                    <input
-                      id="endLocation"
-                      name="endLocation"
-                      type="text"
-                      placeholder="Bijvoorbeeld Leuven"
-                      className="
-                        h-11
-                        w-full
-                        rounded-lg
-                        border
-                        border-zinc-700
-                        bg-zinc-950
-                        px-4
-                        text-sm
-                        text-white
-                        placeholder:text-zinc-600
-                        outline-none
-                        transition-colors
-                        focus:border-red-600
-                        focus:ring-2
-                        focus:ring-red-600/20
-                      "
-                    />
-                  </div>
+                  <input
+                    id="startLocation"
+                    name="startLocation"
+                    type="text"
+                    placeholder="Bijvoorbeeld Brussel"
+                    className="
+                      h-11
+                      w-full
+                      rounded-lg
+                      border
+                      border-zinc-700
+                      bg-zinc-950
+                      px-4
+                      text-sm
+                      text-white
+                      outline-none
+                      transition-colors
+                      placeholder:text-zinc-600
+                      focus:border-red-600
+                    "
+                  />
                 </div>
-              </div>
 
-              {/* Tijd */}
-              <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-6">
-                <h2 className="text-lg font-semibold">
-                  Tijd
-                </h2>
+                {/* Startuur */}
+                <div>
+                  <label
+                    htmlFor="startTime"
+                    className="mb-2 block text-sm font-medium text-zinc-300"
+                  >
+                    Startuur
+                  </label>
 
-                <p className="mt-1 text-sm text-zinc-500">
-                  Wanneer ben je vertrokken en aangekomen?
-                </p>
-
-                <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2">
-                  {/* Starttijd */}
-                  <div>
-                    <label
-                      htmlFor="startTime"
-                      className="mb-2 block text-sm font-medium text-zinc-300"
-                    >
-                      Startuur
-                    </label>
-
-                    <input
-                      id="startTime"
-                      name="startTime"
-                      type="datetime-local"
-                      className="
-                        h-11
-                        w-full
-                        rounded-lg
-                        border
-                        border-zinc-700
-                        bg-zinc-950
-                        px-4
-                        text-sm
-                        text-white
-                        outline-none
-                        transition-colors
-                        focus:border-red-600
-                        focus:ring-2
-                        focus:ring-red-600/20
-                      "
-                    />
-                  </div>
-
-                  {/* Eindtijd */}
-                  <div>
-                    <label
-                      htmlFor="endTime"
-                      className="mb-2 block text-sm font-medium text-zinc-300"
-                    >
-                      Einduur
-                    </label>
-
-                    <input
-                      id="endTime"
-                      name="endTime"
-                      type="datetime-local"
-                      className="
-                        h-11
-                        w-full
-                        rounded-lg
-                        border
-                        border-zinc-700
-                        bg-zinc-950
-                        px-4
-                        text-sm
-                        text-white
-                        outline-none
-                        transition-colors
-                        focus:border-red-600
-                        focus:ring-2
-                        focus:ring-red-600/20
-                      "
-                    />
-                  </div>
+                  <input
+                    id="startTime"
+                    name="startTime"
+                    type="datetime-local"
+                    className="
+                      h-11
+                      w-full
+                      rounded-lg
+                      border
+                      border-zinc-700
+                      bg-zinc-950
+                      px-4
+                      text-sm
+                      text-white
+                      outline-none
+                      transition-colors
+                      focus:border-red-600
+                    "
+                  />
                 </div>
-              </div>
 
-              {/* Details */}
-              <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-6">
-                <h2 className="text-lg font-semibold">
-                  Rijgegevens
-                </h2>
+                {/* Eindlocatie */}
+                <div>
+                  <label
+                    htmlFor="endLocation"
+                    className="mb-2 block text-sm font-medium text-zinc-300"
+                  >
+                    Eindlocatie
+                  </label>
 
-                <p className="mt-1 text-sm text-zinc-500">
-                  Vul de belangrijkste gegevens van je traject in.
-                </p>
+                  <input
+                    id="endLocation"
+                    name="endLocation"
+                    type="text"
+                    placeholder="Bijvoorbeeld Leuven"
+                    className="
+                      h-11
+                      w-full
+                      rounded-lg
+                      border
+                      border-zinc-700
+                      bg-zinc-950
+                      px-4
+                      text-sm
+                      text-white
+                      outline-none
+                      transition-colors
+                      placeholder:text-zinc-600
+                      focus:border-red-600
+                    "
+                  />
+                </div>
 
-                <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2">
-                  {/* Kilometers */}
-                  <div>
-                    <label
-                      htmlFor="distanceKm"
-                      className="mb-2 block text-sm font-medium text-zinc-300"
-                    >
-                      Aantal kilometer
-                    </label>
+                {/* Einduur */}
+                <div>
+                  <label
+                    htmlFor="endTime"
+                    className="mb-2 block text-sm font-medium text-zinc-300"
+                  >
+                    Einduur
+                  </label>
 
-                    <div className="relative">
-                      <input
-                        id="distanceKm"
-                        name="distanceKm"
-                        type="number"
-                        min="0"
-                        step="0.1"
-                        placeholder="Bijvoorbeeld 25.5"
-                        className="
-                          h-11
-                          w-full
-                          rounded-lg
-                          border
-                          border-zinc-700
-                          bg-zinc-950
-                          px-4
-                          pr-12
-                          text-sm
-                          text-white
-                          placeholder:text-zinc-600
-                          outline-none
-                          transition-colors
-                          focus:border-red-600
-                          focus:ring-2
-                          focus:ring-red-600/20
-                        "
-                      />
+                  <input
+                    id="endTime"
+                    name="endTime"
+                    type="datetime-local"
+                    className="
+                      h-11
+                      w-full
+                      rounded-lg
+                      border
+                      border-zinc-700
+                      bg-zinc-950
+                      px-4
+                      text-sm
+                      text-white
+                      outline-none
+                      transition-colors
+                      focus:border-red-600
+                    "
+                  />
+                </div>
 
-                      <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-sm text-zinc-500">
-                        km
-                      </span>
-                    </div>
-                  </div>
+                {/* Aantal km */}
+                <div>
+                  <label
+                    htmlFor="distanceKm"
+                    className="mb-2 block text-sm font-medium text-zinc-300"
+                  >
+                    Aantal kilometer
+                  </label>
 
-                  {/* Verkeer */}
-                  <div>
-                    <label
-                      htmlFor="trafficLevel"
-                      className="mb-2 block text-sm font-medium text-zinc-300"
-                    >
-                      Verkeersomstandigheden
-                    </label>
+                  <input
+                    id="distanceKm"
+                    name="distanceKm"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    placeholder="Bijvoorbeeld 24.5"
+                    className="
+                      h-11
+                      w-full
+                      rounded-lg
+                      border
+                      border-zinc-700
+                      bg-zinc-950
+                      px-4
+                      text-sm
+                      text-white
+                      outline-none
+                      transition-colors
+                      placeholder:text-zinc-600
+                      focus:border-red-600
+                    "
+                  />
+                </div>
 
-                    <select
-                      id="trafficLevel"
-                      name="trafficLevel"
-                      defaultValue=""
-                      className="
-                        h-11
-                        w-full
-                        rounded-lg
-                        border
-                        border-zinc-700
-                        bg-zinc-950
-                        px-4
-                        text-sm
-                        text-white
-                        outline-none
-                        transition-colors
-                        focus:border-red-600
-                        focus:ring-2
-                        focus:ring-red-600/20
-                      "
-                    >
-                      <option value="" disabled>
-                        Kies een niveau
-                      </option>
+                {/* Verkeersomstandigheden */}
+                <div>
+                  <label
+                    htmlFor="trafficLevel"
+                    className="mb-2 block text-sm font-medium text-zinc-300"
+                  >
+                    Verkeersomstandigheden
+                  </label>
 
-                      <option value="laag">
-                        Laag
-                      </option>
-
-                      <option value="middel">
-                        Middel
-                      </option>
-
-                      <option value="hoog">
-                        Hoog
-                      </option>
-                    </select>
-                  </div>
+                  <select
+                    id="trafficLevel"
+                    name="trafficLevel"
+                    defaultValue=""
+                    className="
+                      h-11
+                      w-full
+                      rounded-lg
+                      border
+                      border-zinc-700
+                      bg-zinc-950
+                      px-4
+                      text-sm
+                      text-white
+                      outline-none
+                      transition-colors
+                      focus:border-red-600
+                    "
+                  >
+                    <option value="" disabled>
+                      Kies verkeersomstandigheden
+                    </option>
+                    <option value="laag">Laag</option>
+                    <option value="middel">Middel</option>
+                    <option value="hoog">Hoog</option>
+                  </select>
                 </div>
               </div>
 
               {/* Opmerking */}
-              <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-6">
-                <h2 className="text-lg font-semibold">
+              <div className="mt-6">
+                <label
+                  htmlFor="guideComment"
+                  className="mb-2 block text-sm font-medium text-zinc-300"
+                >
                   Opmerking van de gids
-                </h2>
-
-                <p className="mt-1 text-sm text-zinc-500">
-                  Voeg eventueel een opmerking van je begeleider toe.
-                </p>
+                </label>
 
                 <textarea
                   id="guideComment"
                   name="guideComment"
                   rows={5}
-                  placeholder="Bijvoorbeeld: goed gereden, maar extra aandacht besteden aan parkeren..."
+                  placeholder="Eventuele opmerkingen over dit traject..."
                   className="
-                    mt-6
                     w-full
                     resize-none
                     rounded-lg
@@ -387,29 +313,25 @@ export default async function NieuwTrajectPage() {
                     py-3
                     text-sm
                     text-white
-                    placeholder:text-zinc-600
                     outline-none
                     transition-colors
+                    placeholder:text-zinc-600
                     focus:border-red-600
-                    focus:ring-2
-                    focus:ring-red-600/20
                   "
                 />
               </div>
 
-              {/* Actions */}
-              <div className="flex items-center justify-end gap-3">
+              {/* Knoppen */}
+              <div className="mt-8 flex items-center justify-end gap-3 border-t border-zinc-800 pt-6">
                 <Link
                   href="/trajecten"
                   className="
                     rounded-lg
-                    border
-                    border-zinc-700
                     px-5
                     py-3
                     text-sm
                     font-medium
-                    text-zinc-300
+                    text-zinc-400
                     transition-colors
                     hover:bg-zinc-800
                     hover:text-white
@@ -428,12 +350,8 @@ export default async function NieuwTrajectPage() {
                     text-sm
                     font-semibold
                     text-white
-                    shadow-lg
-                    shadow-red-600/10
-                    transition-all
-                    duration-200
+                    transition-colors
                     hover:bg-red-500
-                    hover:shadow-red-600/20
                   "
                 >
                   Traject opslaan
