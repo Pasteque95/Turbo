@@ -1,17 +1,15 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-export async function createDrivingSession(formData: FormData) {
+export async function createDrivingSession(formData: FormData): Promise<void> {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.id) {
-    return {
-      success: false,
-      message: "Je moet ingelogd zijn.",
-    };
+    return;
   }
 
   const userId = Number(session.user.id);
@@ -53,17 +51,11 @@ export async function createDrivingSession(formData: FormData) {
     distanceKm < 0 ||
     !trafficLevel
   ) {
-    return {
-      success: false,
-      message: "Vul alle verplichte velden correct in.",
-    };
+    return;
   }
 
   if (!["laag", "middel", "hoog"].includes(trafficLevel)) {
-    return {
-      success: false,
-      message: "Ongeldige verkeersomstandigheid.",
-    };
+    return;
   }
 
   const startDate = new Date(startTime);
@@ -73,17 +65,11 @@ export async function createDrivingSession(formData: FormData) {
     Number.isNaN(startDate.getTime()) ||
     Number.isNaN(endDate.getTime())
   ) {
-    return {
-      success: false,
-      message: "Ongeldige datum of tijd.",
-    };
+    return;
   }
 
   if (endDate <= startDate) {
-    return {
-      success: false,
-      message: "Het einduur moet na het startuur liggen.",
-    };
+    return;
   }
 
   try {
@@ -99,17 +85,10 @@ export async function createDrivingSession(formData: FormData) {
         guideComment: guideComment || null,
       },
     });
-
-    return {
-      success: true,
-      message: "Traject succesvol opgeslagen.",
-    };
   } catch (error) {
     console.error("Fout bij opslaan traject:", error);
-
-    return {
-      success: false,
-      message: "Het traject kon niet worden opgeslagen.",
-    };
+    return;
   }
+
+  redirect("/trajecten");
 }
