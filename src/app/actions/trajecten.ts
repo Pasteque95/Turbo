@@ -92,3 +92,31 @@ export async function createDrivingSession(formData: FormData): Promise<void> {
 
   redirect("/trajecten");
 }
+
+export async function deleteDrivingSession(formData: FormData): Promise<void> {
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user?.id) {
+    return;
+  }
+
+  const userId = Number(session.user.id);
+  const sessionId = Number(formData.get("sessionId"));
+
+  if (!Number.isInteger(sessionId)) {
+    return;
+  }
+
+  try {
+    await prisma.drivingSession.deleteMany({
+      where: {
+        id: sessionId,
+        userId,
+      },
+    });
+
+    redirect("/trajecten");
+  } catch (error) {
+    console.error("Fout bij verwijderen traject:", error);
+  }
+}

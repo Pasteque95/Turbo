@@ -1,8 +1,10 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
+import { deleteDrivingSession } from "@/app/actions/trajecten";
 
 export default async function TrajectenPage() {
   const session = await getServerSession(authOptions);
@@ -172,7 +174,7 @@ export default async function TrajectenPage() {
                   <div
                     className="
                       grid
-                      grid-cols-[1.4fr_1.4fr_0.8fr_0.9fr_1.2fr]
+                      grid-cols-[1.4fr_1.4fr_0.8fr_0.9fr_1.2fr_0.8fr]
                       border-b
                       border-zinc-800
                       px-6
@@ -189,6 +191,7 @@ export default async function TrajectenPage() {
                     <span>KM</span>
                     <span>Verkeer</span>
                     <span>Datum</span>
+                    <span>Acties</span>
                   </div>
 
                   {/* Table rows */}
@@ -208,7 +211,7 @@ export default async function TrajectenPage() {
                       <div
                         className="
                           grid
-                          grid-cols-[1.4fr_1.4fr_0.8fr_0.9fr_1.2fr]
+                          grid-cols-[1.4fr_1.4fr_0.8fr_0.9fr_1.2fr_0.8fr]
                           items-center
                           text-sm
                         "
@@ -256,6 +259,32 @@ export default async function TrajectenPage() {
                             traject.startTime
                           ).toLocaleDateString("nl-BE")}
                         </span>
+
+                        {/* Verwijderen */}
+                        <form action={deleteDrivingSession}>
+                          <input
+                            type="hidden"
+                            name="sessionId"
+                            value={traject.id}
+                          />
+
+                          <button
+                            type="submit"
+                            className="
+                              rounded-lg
+                              px-3
+                              py-2
+                              text-xs
+                              font-medium
+                              text-red-500
+                              transition-colors
+                              hover:bg-red-600/10
+                              hover:text-red-400
+                            "
+                          >
+                            Verwijderen
+                          </button>
+                        </form>
                       </div>
 
                       {/* Opmerking van de gids */}
