@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
@@ -90,6 +91,7 @@ export async function createDrivingSession(formData: FormData): Promise<void> {
     return;
   }
 
+  revalidatePath("/trajecten");
   redirect("/trajecten");
 }
 
@@ -115,6 +117,7 @@ export async function deleteDrivingSession(formData: FormData): Promise<void> {
       },
     });
 
+    revalidatePath("/trajecten");
     redirect("/trajecten");
   } catch (error) {
     console.error("Fout bij verwijderen traject:", error);
