@@ -8,18 +8,20 @@ export default function LogoutButton() {
       type="button"
       onClick={() => signOut({ callbackUrl: "/" })}
       className="
+        w-full
         rounded-lg
-        bg-red-600
-        px-5
-        py-2
+        px-4
+        py-3
+        text-left
         text-sm
-        font-semibold
-        text-white
+        font-medium
+        text-zinc-400
         transition-colors
-        hover:bg-red-700
+        hover:bg-red-600/10
+        hover:text-red-500
       "
     >
-      Logout
+      Uitloggen
     </button>
   );
 }

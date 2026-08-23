@@ -4,7 +4,6 @@ import Link from "next/link";
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
-import LogoutButton from "@/components/auth/LogoutButton";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
@@ -115,7 +114,6 @@ export default async function DashboardPage() {
             <Link
               href="/profiel"
               className="
-                mb-2
                 block
                 rounded-lg
                 px-4
@@ -130,8 +128,6 @@ export default async function DashboardPage() {
             >
               Profiel
             </Link>
-
-            <LogoutButton />
           </div>
         </aside>
 
