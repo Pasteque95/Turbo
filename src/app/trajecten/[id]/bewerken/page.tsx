@@ -144,7 +144,6 @@ export default async function BewerkTrajectPage({
                 md:p-8
               "
             >
-              {/* ID van het traject */}
               <input
                 type="hidden"
                 name="sessionId"

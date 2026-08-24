@@ -260,31 +260,52 @@ export default async function TrajectenPage() {
                           ).toLocaleDateString("nl-BE")}
                         </span>
 
-                        {/* Verwijderen */}
-                        <form action={deleteDrivingSession}>
-                          <input
-                            type="hidden"
-                            name="sessionId"
-                            value={traject.id}
-                          />
-
-                          <button
-                            type="submit"
+                        {/* Acties */}
+                        <div className="flex items-center gap-2">
+                          {/* Bewerken */}
+                          <Link
+                            href={`/trajecten/${traject.id}/bewerken`}
                             className="
                               rounded-lg
                               px-3
                               py-2
                               text-xs
                               font-medium
-                              text-red-500
+                              text-zinc-400
                               transition-colors
-                              hover:bg-red-600/10
-                              hover:text-red-400
+                              hover:bg-zinc-800
+                              hover:text-white
                             "
                           >
-                            Verwijderen
-                          </button>
-                        </form>
+                            Bewerken
+                          </Link>
+
+                          {/* Verwijderen */}
+                          <form action={deleteDrivingSession}>
+                            <input
+                              type="hidden"
+                              name="sessionId"
+                              value={traject.id}
+                            />
+
+                            <button
+                              type="submit"
+                              className="
+                                rounded-lg
+                                px-3
+                                py-2
+                                text-xs
+                                font-medium
+                                text-red-500
+                                transition-colors
+                                hover:bg-red-600/10
+                                hover:text-red-400
+                              "
+                            >
+                              Verwijderen
+                            </button>
+                          </form>
+                        </div>
                       </div>
 
                       {/* Opmerking van de gids */}
