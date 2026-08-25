@@ -21,6 +21,11 @@ export default function RegisterForm({
 
     const result = await registerUser(formData);
 
+    if (result.success) {
+      onLogin();
+      return;
+    }
+
     setMessage(result.message);
     setLoading(false);
   }
