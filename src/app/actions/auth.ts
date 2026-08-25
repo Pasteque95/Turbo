@@ -10,8 +10,17 @@ export async function registerUser(formData: FormData) {
     .trim()
     .toLowerCase();
   const password = String(formData.get("password") ?? "");
+  const provisionalLicenseAt = String(
+    formData.get("provisionalLicenseAt") ?? ""
+  ).trim();
 
-  if (!firstName || !lastName || !email || !password) {
+  if (
+    !firstName ||
+    !lastName ||
+    !email ||
+    !password ||
+    !provisionalLicenseAt
+  ) {
     return {
       success: false,
       message: "Please fill in all fields.",
@@ -38,6 +47,15 @@ export async function registerUser(formData: FormData) {
     };
   }
 
+  const licenseDate = new Date(`${provisionalLicenseAt}T00:00:00`);
+
+  if (Number.isNaN(licenseDate.getTime())) {
+    return {
+      success: false,
+      message: "Please enter a valid provisional license date.",
+    };
+  }
+
   const hashedPassword = await bcrypt.hash(password, 12);
 
   await prisma.user.create({
@@ -46,7 +64,7 @@ export async function registerUser(formData: FormData) {
       lastName,
       email,
       password: hashedPassword,
-      provisionalLicenseAt: new Date(),
+      provisionalLicenseAt: licenseDate,
     },
   });
 

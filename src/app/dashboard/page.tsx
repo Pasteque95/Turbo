@@ -52,20 +52,42 @@ export default async function DashboardPage() {
     take: 5,
   });
 
-  const now = new Date();
-  const licenseDate = new Date(user.provisionalLicenseAt);
+  // Rijperiode berekenen op basis van volledige kalendermaanden
+const now = new Date();
+const licenseDate = new Date(user.provisionalLicenseAt);
 
-  let monthsDriving =
-    (now.getFullYear() - licenseDate.getFullYear()) * 12 +
-    (now.getMonth() - licenseDate.getMonth());
+// Bereken het aantal volledige dagen sinds het voorlopig rijbewijs
+const nowDate = new Date(
+  now.getFullYear(),
+  now.getMonth(),
+  now.getDate()
+);
 
-  if (now.getDate() < licenseDate.getDate()) {
-    monthsDriving--;
-  }
+const licenseStartDate = new Date(
+  licenseDate.getFullYear(),
+  licenseDate.getMonth(),
+  licenseDate.getDate()
+);
 
-  monthsDriving = Math.max(monthsDriving, 0);
+const millisecondsPerDay = 1000 * 60 * 60 * 24;
 
-  const minimumReached = monthsDriving >= 9;
+const daysDriving = Math.max(
+  0,
+  Math.floor(
+    (nowDate.getTime() - licenseStartDate.getTime()) /
+      millisecondsPerDay
+  )
+);
+
+// Gemiddeld aantal dagen per maand
+const daysPerMonth = 30.4375;
+
+const monthsDriving = Math.min(
+  Math.floor(daysDriving / daysPerMonth),
+  9
+);
+
+const minimumReached = monthsDriving >= 9;
 
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
